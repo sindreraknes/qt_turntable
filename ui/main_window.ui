@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1035</width>
-    <height>739</height>
+    <width>1600</width>
+    <height>1020</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -27,25 +27,12 @@
    <locale language="English" country="Australia"/>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="quit_button">
-    <property name="geometry">
-     <rect>
-      <x>930</x>
-      <y>660</y>
-      <width>99</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Quit</string>
-    </property>
-   </widget>
    <widget class="QFrame" name="frame_2">
     <property name="geometry">
      <rect>
-      <x>630</x>
+      <x>480</x>
       <y>13</y>
-      <width>260</width>
+      <width>240</width>
       <height>131</height>
      </rect>
     </property>
@@ -58,7 +45,7 @@
     <widget class="QLCDNumber" name="current_position">
      <property name="geometry">
       <rect>
-       <x>180</x>
+       <x>160</x>
        <y>10</y>
        <width>70</width>
        <height>35</height>
@@ -97,7 +84,7 @@
     <widget class="QDoubleSpinBox" name="set_position_input">
      <property name="geometry">
       <rect>
-       <x>180</x>
+       <x>160</x>
        <y>50</y>
        <width>70</width>
        <height>35</height>
@@ -156,9 +143,9 @@
    <widget class="QFrame" name="frame">
     <property name="geometry">
      <rect>
-      <x>15</x>
+      <x>4</x>
       <y>13</y>
-      <width>590</width>
+      <width>470</width>
       <height>131</height>
      </rect>
     </property>
@@ -189,7 +176,7 @@
     <widget class="QComboBox" name="comboBox">
      <property name="geometry">
       <rect>
-       <x>110</x>
+       <x>80</x>
        <y>40</y>
        <width>250</width>
        <height>35</height>
@@ -204,7 +191,7 @@
     <widget class="QPushButton" name="button_refresh_topic">
      <property name="geometry">
       <rect>
-       <x>390</x>
+       <x>340</x>
        <y>40</y>
        <width>121</width>
        <height>35</height>
@@ -222,7 +209,7 @@
     <widget class="QPushButton" name="button_subscribe_topic">
      <property name="geometry">
       <rect>
-       <x>189</x>
+       <x>140</x>
        <y>80</y>
        <width>321</width>
        <height>35</height>
@@ -235,7 +222,7 @@
     <widget class="QLabel" name="label_4">
      <property name="geometry">
       <rect>
-       <x>210</x>
+       <x>180</x>
        <y>0</y>
        <width>161</width>
        <height>35</height>
@@ -253,7 +240,7 @@
     <widget class="QCheckBox" name="rgb_checkbox">
      <property name="geometry">
       <rect>
-       <x>110</x>
+       <x>10</x>
        <y>80</y>
        <width>97</width>
        <height>35</height>
@@ -272,10 +259,10 @@
    <widget class="QFrame" name="frame_3">
     <property name="geometry">
      <rect>
-      <x>15</x>
-      <y>520</y>
-      <width>875</width>
-      <height>171</height>
+      <x>726</x>
+      <y>13</y>
+      <width>866</width>
+      <height>131</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -284,29 +271,11 @@
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
-    <widget class="QLabel" name="label_5">
-     <property name="geometry">
-      <rect>
-       <x>360</x>
-       <y>10</y>
-       <width>151</width>
-       <height>35</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>SAVE PICTURES</string>
-     </property>
-    </widget>
     <widget class="QLabel" name="label_6">
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>40</y>
+       <y>10</y>
        <width>81</width>
        <height>35</height>
       </rect>
@@ -324,7 +293,7 @@
      <property name="geometry">
       <rect>
        <x>90</x>
-       <y>40</y>
+       <y>10</y>
        <width>121</width>
        <height>35</height>
       </rect>
@@ -337,7 +306,7 @@
      <property name="geometry">
       <rect>
        <x>230</x>
-       <y>40</y>
+       <y>10</y>
        <width>631</width>
        <height>35</height>
       </rect>
@@ -359,8 +328,8 @@
      <property name="geometry">
       <rect>
        <x>230</x>
-       <y>120</y>
-       <width>110</width>
+       <y>90</y>
+       <width>50</width>
        <height>35</height>
       </rect>
      </property>
@@ -373,7 +342,7 @@
       <string/>
      </property>
      <property name="suffix">
-      <string> pic(s)</string>
+      <string/>
      </property>
      <property name="decimals">
       <number>0</number>
@@ -389,7 +358,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>120</y>
+       <y>90</y>
        <width>190</width>
        <height>35</height>
       </rect>
@@ -406,22 +375,22 @@
     <widget class="QPushButton" name="button_take_pic">
      <property name="geometry">
       <rect>
-       <x>700</x>
-       <y>90</y>
-       <width>160</width>
-       <height>60</height>
+       <x>504</x>
+       <y>50</y>
+       <width>130</width>
+       <height>35</height>
       </rect>
      </property>
      <property name="text">
-      <string>TAKE PICTURE(S)</string>
+      <string>Take Picture</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="fileName">
      <property name="geometry">
       <rect>
        <x>230</x>
-       <y>80</y>
-       <width>200</width>
+       <y>50</y>
+       <width>130</width>
        <height>35</height>
       </rect>
      </property>
@@ -438,7 +407,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>80</y>
+       <y>50</y>
        <width>190</width>
        <height>35</height>
       </rect>
@@ -452,14 +421,45 @@
       <string>File name:</string>
      </property>
     </widget>
+    <widget class="QPushButton" name="button_load_picture">
+     <property name="geometry">
+      <rect>
+       <x>504</x>
+       <y>90</y>
+       <width>130</width>
+       <height>35</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Load Picture</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkLoad">
+     <property name="geometry">
+      <rect>
+       <x>644</x>
+       <y>50</y>
+       <width>220</width>
+       <height>35</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Load previous picture</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QFrame" name="frame_4">
     <property name="geometry">
      <rect>
-      <x>15</x>
+      <x>4</x>
       <y>150</y>
-      <width>875</width>
-      <height>361</height>
+      <width>1588</width>
+      <height>820</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -473,8 +473,8 @@
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>875</width>
-       <height>361</height>
+       <width>1588</width>
+       <height>820</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout"/>
@@ -486,7 +486,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1035</width>
+     <width>1600</width>
      <height>25</height>
     </rect>
    </property>
@@ -553,22 +553,6 @@
     <hint type="destinationlabel">
      <x>399</x>
      <y>299</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>quit_button</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindowDesign</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>839</x>
-     <y>638</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>451</x>
-     <y>342</y>
     </hint>
    </hints>
   </connection>

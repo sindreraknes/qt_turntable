@@ -36,8 +36,7 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     qRegisterMetaType<pcl::PointCloud<pcl::PointXYZ>::Ptr >("pcl::PointCloud<pcl::PointXYZ>::Ptr");
     // Setup ui and ros
     ui.setupUi(this);
-    //QObject::connect(ui.actionAbout_Qt, SIGNAL(triggered(bool)), qApp, SLOT(aboutQt()));
-	setWindowIcon(QIcon(":/images/icon.png"));
+    setWindowIcon(QIcon(":/images/icon2.png"));
     QObject::connect(&qnode, SIGNAL(rosShutdown()), this, SLOT(close()));
 
     // Signal for angles
@@ -49,12 +48,14 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     // Signals for subscribing to pointcloud2 topic
     QObject::connect(this, SIGNAL(subscribeToPointCloud2(QString,bool)), &qnode, SLOT(subscribeToPointCloud2(QString,bool)));
     // Signal for taking picture
-    QObject::connect(this, SIGNAL(takePictures(int, QString)), &qnode, SLOT(takePicture(int, QString)));
+    QObject::connect(this, SIGNAL(takePictures(int, QString, bool)), &qnode, SLOT(takePicture(int, QString, bool)));
     // Signal for PointCloud visualizer
     QObject::connect(&qnode, SIGNAL(setPointCloud(pcl::PointCloud<pcl::PointXYZ>::Ptr)), this, SLOT(getPointCloud(pcl::PointCloud<pcl::PointXYZ>::Ptr)));
-    QObject::connect(&qnode, SIGNAL(displayImage(pcl::PointCloud<pcl::PointXYZ>::Ptr)), this, SLOT(displayImage(pcl::PointCloud<pcl::PointXYZ>::Ptr)));
+    QObject::connect(&qnode, SIGNAL(displayImage(QString)), this, SLOT(displayImage(QString)));
     // Init ROS
     qnode.init();
+
+    this->showMaximized();
 
     // Initials
     ui.textbox_path->setText("/home/minions");
@@ -73,6 +74,8 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     viewer->createViewPort(0, 0, 0.5, 1, left);
     viewer->createViewPort(0.5, 0, 1, 1, right);
     w->update();
+    viewer->setCameraPosition( 0.146598, 0.0941454, -4.95334, -0.0857047, -0.0396425, 0.600109, -0.00146821, -0.999707, -0.0241453, 0);
+    viewer->updateCamera();
 
     ui.verticalLayout->addWidget(w);
 
@@ -132,7 +135,22 @@ void MainWindow::on_button_take_pic_clicked(bool check)
     QString url = ui.textbox_path->toPlainText();
     url.append("/");
     url.append(ui.fileName->text());
-    Q_EMIT takePictures(ui.set_nrof_pic->value(), url);
+    Q_EMIT takePictures(ui.set_nrof_pic->value(), url, ui.checkLoad->isChecked());
+}
+
+void MainWindow::on_button_load_picture_clicked(bool check)
+{
+    QString fileName;
+    QString tmp = ui.textbox_path->toPlainText();
+    QString filters = "PointClouds (*.pcd);; PointClouds (*.PCD)";
+    if(tmp.length() == 0){
+        fileName = QFileDialog::getExistingDirectory(this, tr("Choose Or Create Directory"),"/home/minions",QFileDialog::DontResolveSymlinks);
+    }
+    else{
+        fileName = QFileDialog::getOpenFileName(this,tr("Choose a .pcd file to open"),tmp,tr("PointClouds (*.pcd *.PCD)"));
+    }
+
+    displayImage(fileName);
 }
 
 void MainWindow::getPointCloud(pcl::PointCloud<pcl::PointXYZ>::Ptr c)
@@ -140,17 +158,22 @@ void MainWindow::getPointCloud(pcl::PointCloud<pcl::PointXYZ>::Ptr c)
 
     if(!viewer->updatePointCloud(c, "cloud")){
         viewer->addPointCloud(c, "cloud", left);
-        viewer->resetCameraViewpoint("cloud");
         w->update();
     }
     w->update();
 }
 
-void MainWindow::displayImage(pcl::PointCloud<pcl::PointXYZ>::Ptr c)
+void MainWindow::displayImage(QString url)
 {
-    if(!viewer->updatePointCloud(c, "displayCloud")){
-        viewer->addPointCloud(c, "displayCloud", right);
-        viewer->resetCameraViewpoint("displayCloud");
+
+    pcl::PointCloud<pcl::PointXYZ>::Ptr displayCloud (new pcl::PointCloud<pcl::PointXYZ>);
+    if(pcl::io::loadPCDFile<pcl::PointXYZ>(url.toUtf8().constData(), *displayCloud) == -1){
+        std::cout << "Could not load file" << std::endl;
+        return;
+    }
+
+    if(!viewer->updatePointCloud(displayCloud, "displayCloud")){
+        viewer->addPointCloud(displayCloud, "displayCloud", right);
         w->update();
     }
     w->update();

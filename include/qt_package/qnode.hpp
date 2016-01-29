@@ -58,13 +58,13 @@ Q_SIGNALS:
     void sendCurrentAngle(double d);
     void sendTopics(QStringList list);
     void setPointCloud(pcl::PointCloud<pcl::PointXYZ>::Ptr c);
-    void displayImage(pcl::PointCloud<pcl::PointXYZ>::Ptr c);
+    void displayImage(QString url);
 
 public Q_SLOTS:
     void findTopics();
     void subscribeToPointCloud2(QString topic, bool rgb);
     void setAngle(double angle);
-    void takePicture(int nrPicture, QString url);
+    void takePicture(int nrPicture, QString url, bool display);
 
 private:
 	int init_argc;

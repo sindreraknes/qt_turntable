@@ -96,7 +96,7 @@ void QNode::setAngle(double angle)
     anglepub.publish(msg);
 }
 
-void QNode::takePicture(int nrPicture, QString url)
+void QNode::takePicture(int nrPicture, QString url, bool display)
 {
     bool running = true;
     int picture_taken = 0;
@@ -123,15 +123,11 @@ void QNode::takePicture(int nrPicture, QString url)
         if(picture_taken == nrPicture)
         {
             running = false;
-            std::cout << "Done!" << std::endl;
         }
     }
-    pcl::PointCloud<pcl::PointXYZ>::Ptr displayCloud (new pcl::PointCloud<pcl::PointXYZ>);
-    if(pcl::io::loadPCDFile<pcl::PointXYZ>(tmpUrl.toUtf8().constData(), *displayCloud) == -1){
-        std::cout << "Could not load file" << std::endl;
-        return;
+    if(display){
+        Q_EMIT displayImage(tmpUrl);
     }
-    Q_EMIT displayImage(displayCloud);
 }
 
 // ********* CALLBACK METHODS ********* //
