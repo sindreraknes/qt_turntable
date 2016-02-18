@@ -54,6 +54,7 @@ public Q_SLOTS:
     void readCurrentAngle(double d);
     void updateTopics(QStringList list);
     void getPointCloud(pcl::PointCloud<pcl::PointXYZ>::Ptr c);
+    void getPointCloudRGB(pcl::PointCloud<pcl::PointXYZRGB>::Ptr c);
     void displayImage(QString url);
 
 Q_SIGNALS:
@@ -66,7 +67,7 @@ private:
 	Ui::MainWindowDesign ui;
 	QNode qnode;
     boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer;
-    pcl::PointCloud<pcl::PointXYZ>::Ptr displayCloud;
+    //pcl::PointCloud<pcl::PointXYZ>::Ptr displayCloud;
     QVTKWidget *w;
     int left;
     int right;

@@ -85,7 +85,7 @@ void QNode::subscribeToPointCloud2(QString topic, bool rgb){
     ros::NodeHandle n;
     rgb_enabled = rgb;
     const char *tmp = topic.toUtf8().constData();
-    pointCloud2Sub = n.subscribe<sensor_msgs::PointCloud2, QNode>(tmp, 1000, &QNode::cloudCallback,this);
+    pointCloud2Sub = n.subscribe<sensor_msgs::PointCloud2, QNode>(tmp, 1, &QNode::cloudCallback,this);
 }
 
 void QNode::setAngle(double angle)
@@ -111,7 +111,8 @@ void QNode::takePicture(int nrPicture, QString url, bool display)
             tmpUrl.append(".pcd");
             //take picture here
             if(rgb_enabled){
-                pcl::io::savePCDFileASCII(tmpUrl.toUtf8().constData(), cloudRGB);
+                pcl::io::savePCDFile(tmpUrl.toUtf8().constData(), cloudRGB);
+
                 picture_taken = picture_taken + 1;
             }
             else{
@@ -142,13 +143,20 @@ void QNode::cloudCallback(const sensor_msgs::PointCloud2ConstPtr &cloud_msg){
         pcl::fromROSMsg(*cloud_msg, cloud);
         if(rgb_enabled){
             pcl::fromROSMsg(*cloud_msg, cloudRGB);
-        }
+            pcl::PointCloud<pcl::PointXYZRGB>::Ptr tmpCloud(new pcl::PointCloud<pcl::PointXYZRGB>);
+            pcl::fromROSMsg(*cloud_msg, *tmpCloud);
+            pcl::PCDWriter writer;
+            writer.writeASCII("/home/minions/rofl.pcd",*tmpCloud);
 
-        // Cloud conversion and visualization
-        pcl::PointCloud<pcl::PointXYZ>::Ptr tmpCloud(new pcl::PointCloud<pcl::PointXYZ>);
-        pcl::fromROSMsg(*cloud_msg, *tmpCloud);
+            Q_EMIT setPointCloudRGB(tmpCloud);
+        }
+        else{
+            // Cloud conversion and visualization
+            pcl::PointCloud<pcl::PointXYZ>::Ptr tmpCloud(new pcl::PointCloud<pcl::PointXYZ>);
+            pcl::fromROSMsg(*cloud_msg, *tmpCloud);
+            Q_EMIT setPointCloud(tmpCloud);
+        }
         picture_flag = true;
-        Q_EMIT setPointCloud(tmpCloud);
 
 }
 

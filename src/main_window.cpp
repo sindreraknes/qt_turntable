@@ -34,6 +34,7 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	, qnode(argc,argv)
 {
     qRegisterMetaType<pcl::PointCloud<pcl::PointXYZ>::Ptr >("pcl::PointCloud<pcl::PointXYZ>::Ptr");
+    qRegisterMetaType<pcl::PointCloud<pcl::PointXYZRGB>::Ptr >("pcl::PointCloud<pcl::PointXYZRGB>::Ptr");
     // Setup ui and ros
     ui.setupUi(this);
     setWindowIcon(QIcon(":/images/icon2.png"));
@@ -51,6 +52,7 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     QObject::connect(this, SIGNAL(takePictures(int, QString, bool)), &qnode, SLOT(takePicture(int, QString, bool)));
     // Signal for PointCloud visualizer
     QObject::connect(&qnode, SIGNAL(setPointCloud(pcl::PointCloud<pcl::PointXYZ>::Ptr)), this, SLOT(getPointCloud(pcl::PointCloud<pcl::PointXYZ>::Ptr)));
+    QObject::connect(&qnode, SIGNAL(setPointCloudRGB(pcl::PointCloud<pcl::PointXYZRGB>::Ptr)), this, SLOT(getPointCloudRGB(pcl::PointCloud<pcl::PointXYZRGB>::Ptr)));
     QObject::connect(&qnode, SIGNAL(displayImage(QString)), this, SLOT(displayImage(QString)));
     // Init ROS
     qnode.init();
@@ -60,7 +62,7 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     // Initials
     ui.textbox_path->setText("/home/minions");
     ui.button_take_pic->setEnabled(false);
-    ui.rgb_checkbox->setEnabled(false);
+    ui.rgb_checkbox->setEnabled(true);
 
     //TEST AREA 1001
     left = 0;
@@ -163,19 +165,43 @@ void MainWindow::getPointCloud(pcl::PointCloud<pcl::PointXYZ>::Ptr c)
     w->update();
 }
 
-void MainWindow::displayImage(QString url)
+void MainWindow::getPointCloudRGB(pcl::PointCloud<pcl::PointXYZRGB>::Ptr c)
 {
-
-    pcl::PointCloud<pcl::PointXYZ>::Ptr displayCloud (new pcl::PointCloud<pcl::PointXYZ>);
-    if(pcl::io::loadPCDFile<pcl::PointXYZ>(url.toUtf8().constData(), *displayCloud) == -1){
-        std::cout << "Could not load file" << std::endl;
-        return;
-    }
-
-    if(!viewer->updatePointCloud(displayCloud, "displayCloud")){
-        viewer->addPointCloud(displayCloud, "displayCloud", right);
+    if(!viewer->updatePointCloud(c, "cloud")){
+        viewer->addPointCloud(c, "cloud", left);
         w->update();
     }
+    w->update();
+}
+
+void MainWindow::displayImage(QString url)
+{
+    if(ui.rgb_checkbox->isChecked()){
+        pcl::PointCloud<pcl::PointXYZRGB>::Ptr displayCloud (new pcl::PointCloud<pcl::PointXYZRGB>);
+        if(pcl::io::loadPCDFile<pcl::PointXYZRGB>(url.toUtf8().constData(), *displayCloud) == -1){
+            std::cout << "Could not load file" << std::endl;
+            return;
+        }
+        if(!viewer->updatePointCloud(displayCloud, "displayCloud")){
+            viewer->addPointCloud(displayCloud, "displayCloud", right);
+            w->update();
+        }
+
+    }
+    else{
+        pcl::PointCloud<pcl::PointXYZ>::Ptr displayCloud (new pcl::PointCloud<pcl::PointXYZ>);
+        if(pcl::io::loadPCDFile<pcl::PointXYZ>(url.toUtf8().constData(), *displayCloud) == -1){
+            std::cout << "Could not load file" << std::endl;
+            return;
+        }
+        if(!viewer->updatePointCloud(displayCloud, "displayCloud")){
+            viewer->addPointCloud(displayCloud, "displayCloud", right);
+            w->update();
+        }
+
+    }
+
+
     w->update();
 }
 

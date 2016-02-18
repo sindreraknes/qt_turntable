@@ -58,6 +58,7 @@ Q_SIGNALS:
     void sendCurrentAngle(double d);
     void sendTopics(QStringList list);
     void setPointCloud(pcl::PointCloud<pcl::PointXYZ>::Ptr c);
+    void setPointCloudRGB(pcl::PointCloud<pcl::PointXYZRGB>::Ptr c);
     void displayImage(QString url);
 
 public Q_SLOTS:
