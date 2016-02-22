@@ -111,7 +111,8 @@ void QNode::takePicture(int nrPicture, QString url, bool display)
             tmpUrl.append(".pcd");
             //take picture here
             if(rgb_enabled){
-                pcl::io::savePCDFile(tmpUrl.toUtf8().constData(), cloudRGB);
+                //pcl::io::savePCDFile(tmpUrl.toUtf8().constData(), cloudRGB);
+                pcl::io::savePCDFileBinary(tmpUrl.toUtf8().constData(),cloudRGB);
 
                 picture_taken = picture_taken + 1;
             }
@@ -145,9 +146,6 @@ void QNode::cloudCallback(const sensor_msgs::PointCloud2ConstPtr &cloud_msg){
             pcl::fromROSMsg(*cloud_msg, cloudRGB);
             pcl::PointCloud<pcl::PointXYZRGB>::Ptr tmpCloud(new pcl::PointCloud<pcl::PointXYZRGB>);
             pcl::fromROSMsg(*cloud_msg, *tmpCloud);
-            pcl::PCDWriter writer;
-            writer.writeASCII("/home/minions/rofl.pcd",*tmpCloud);
-
             Q_EMIT setPointCloudRGB(tmpCloud);
         }
         else{
