@@ -72,6 +72,7 @@ private:
 	char** init_argv;
     pcl::PointCloud<pcl::PointXYZRGB> cloudRGB;
     pcl::PointCloud<pcl::PointXYZ> cloud;
+    pcl::PointCloud<pcl::PointXYZ>::Ptr rofl;
     ros::Publisher anglepub;
     ros::Subscriber anglesub;
     ros::Subscriber pointCloud2Sub;

@@ -21,7 +21,8 @@ namespace qt_package {
 
 QNode::QNode(int argc, char** argv ) :
 	init_argc(argc),
-	init_argv(argv)
+    init_argv(argv),
+    rofl(new pcl::PointCloud<pcl::PointXYZ>)
     {
         qRegisterMetaType<pcl::PointCloud<pcl::PointXYZ>::Ptr >("pcl::PointCloud<pcl::PointXYZ>::Ptr");
     }
@@ -37,7 +38,7 @@ QNode::~QNode() {
 
 bool QNode::init() {
 
-	ros::init(init_argc,init_argv,"qt_package");
+    ros::init(init_argc,init_argv,"qt_package_sindre");
 	if ( ! ros::master::check() ) {
 		return false;
 	}
@@ -75,7 +76,7 @@ void QNode::findTopics(){
 
         // Add more types if needed
         if(QString::compare(tmp, "sensor_msgs/PointCloud2", Qt::CaseInsensitive) == 0){
-            list.append(QString::fromUtf8(info.name.c_str()));
+           list.append(QString::fromUtf8(info.name.c_str()));
         }
     }
     Q_EMIT sendTopics(list);
@@ -152,7 +153,45 @@ void QNode::cloudCallback(const sensor_msgs::PointCloud2ConstPtr &cloud_msg){
             // Cloud conversion and visualization
             pcl::PointCloud<pcl::PointXYZ>::Ptr tmpCloud(new pcl::PointCloud<pcl::PointXYZ>);
             pcl::fromROSMsg(*cloud_msg, *tmpCloud);
+//            //int goodindex = 0;
+////            for(int i = 0; i<tmpCloud->size(); i++){
+////                if(tmpCloud->points[i].z > 1.9 && tmpCloud->points[i].z < 2.0 && tmpCloud->points[i].x > 0.32 && tmpCloud->points[i].x < 0.34
+////                        && tmpCloud->points[i].y > -0.46 && tmpCloud->points[i].y < -0.43){
+////                    goodindex = i;
+////                    std::cout << "good index: " << i << std::endl;
+////                    return;
+////                }
+////            }
+
+//            //    cam1 <<  0.0200591,  -0.999758 , 0.0089781 ,  0.326005,
+//            //             -0.627877, -0.0195849 , -0.778066 , -0.440615,
+//            //              0.778054 ,0.00997016 , -0.628118 ,   1.98857,
+//            //                     0   ,       0  ,        0  ,        1;
+
+//            // Test area
+//            //double x = tmpCloud->points[12000].x;
+//            //double y = tmpCloud->points[12000].y;
+//            //double z = tmpCloud->points[12000].z;
+//            pcl::PointXYZ point;
+//            point = tmpCloud->points[127241];
+////            std::cout << "Point x: " << x << std::endl;
+////            std::cout << "Point y: " << y << std::endl;
+//            //std::cout << "Point z: " << z << std::endl;
+//            std::cout << rofl->size() << std::endl;
+//            rofl->push_back(point);
+//            Q_EMIT setPointCloud(rofl);
+
+
+
+
+//            if(rofl->size() == 10000){
+//                pcl::io::savePCDFileASCII("/home/minions/zaxisfail.pcd", *rofl);
+//            }
+
+
+
             Q_EMIT setPointCloud(tmpCloud);
+
         }
         picture_flag = true;
 
